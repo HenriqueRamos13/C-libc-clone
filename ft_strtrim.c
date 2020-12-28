@@ -45,6 +45,8 @@ char	*ft_strtrim(const char *s1, const char *set)
 	size_t	start;
 	size_t	end;
 
+	if (s1 == NULL || set == NULL)
+		return (NULL);
 	count = 0;
 	while (is_in_set(s1[count], set))
 		count++;

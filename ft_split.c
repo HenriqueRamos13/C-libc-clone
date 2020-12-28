@@ -4,24 +4,24 @@ static	void	*malloc_array(const char *s, char c)
 {
 	char	**arr;
 	size_t	size;
-	size_t	count;
-	size_t	str_size;
+	size_t	ct;
+	size_t	s_sz;
 
-	str_size = 0;
-	count = 0;
-	size = 1;
-	while (s[count] != '\0')
+	s_sz = 0;
+	ct = 0;
+	size = 0;
+	while (s[ct] != '\0')
 	{
-		if (((int)s[count] == (int)c || count + 1 == ft_strlen(s)) && str_size > 0)
+		if (s[ct] != c && s_sz == 0)
 		{
-			str_size = 0;
 			size++;
+			s_sz++;
 		}
-		else if (!((int)s[count] == (int)c))
-			str_size++;
-		count++;
+		else if (s_sz > 0 && !(s[ct] != c))
+			s_sz = 0;
+		ct++;
 	}
-	if (!(arr = ft_calloc(size, sizeof(char *))))
+	if (!(arr = ft_calloc(size + 1, sizeof(char *))))
 		return (NULL);
 	return (arr);
 }
@@ -34,25 +34,19 @@ static	void	*malloc_elements_array(char **arr, const char *s, char c)
 
 	index = 0;
 	count = 0;
-	size = 1;
+	size = 0;
 	while (s[count] != '\0')
 	{
-		if (((int)s[count] == (int)c || count + 1 == ft_strlen(s)) && size > 1)
+		if (s[count] != c)
 		{
-			if (count + 1 == ft_strlen(s))
+			size = 0;
+			while (s[count++] != c)
 				size++;
-			if (!(arr[index] = ft_calloc(size, sizeof(char))))
-				return (NULL);	
+			arr[index] = ft_calloc(size + 1, sizeof(char));
 			index++;
-			size = 1;
-			count++;
 		}
 		else
-		{
 			count++;
-			size++;
-		}
-			
 	}
 	arr[index] = 0;
 	return (arr);
@@ -69,20 +63,18 @@ static	void	fill_array(char **arr, const char *s, char c)
 	j = 0;
 	while (*s != '\0')
 	{
-		if ((int)*s == (int)c && str_size++ > 0)
+		if ((int)*s == (int)c && str_size > 0)
 		{
-			arr[index][j] = '\0';
+			arr[index++][j] = '\0';
 			str_size = 0;
-			index++;
 			j = 0;
 		}
 		else if (!(*s == c))
 		{
 			arr[index][j++] = *s;
-			if (*(s + 1) == '\0')
-			{
+			if ((int)*(s + 1) == 0)
 				arr[index][j] = '\0';
-			}
+			str_size++;
 		}
 		s++;
 	}
@@ -91,9 +83,13 @@ static	void	fill_array(char **arr, const char *s, char c)
 char	**ft_split(const char *s, char c)
 {
 	char	**arr;
-	
-	arr = malloc_array(s, c);
-	malloc_elements_array(arr, s, c);
+
+	if (s == NULL)
+		return (NULL);
+	if (!(arr = malloc_array(s, c)))
+		return (NULL);
+	if (!(arr = malloc_elements_array(arr, s, c)))
+		return (NULL);
 	fill_array(arr, s, c);
 	return (arr);
 }

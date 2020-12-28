@@ -6,6 +6,8 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	size_t	count;
 	size_t	len;
 
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
 	len = ft_strlen(s1) + ft_strlen(s2) + 1;
 	if (!(str = ft_calloc(len, sizeof(char))))
 		return (NULL);

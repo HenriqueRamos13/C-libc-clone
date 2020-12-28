@@ -5,6 +5,8 @@ void	*ft_substr(const char *s, unsigned int start, size_t len)
 	char	*str;
 	size_t	size;
 
+	if (s == NULL)
+		return (NULL);
 	if (start >= ft_strlen(s))
 	{
 		if (!(str = malloc(sizeof(char) * 1)))
@@ -19,9 +21,7 @@ void	*ft_substr(const char *s, unsigned int start, size_t len)
 		return (NULL);
 	size = -1;
 	while (s[start + ++size] != '\0' && size < len)
-	{
 		str[size] = s[start + (size)];
-	}
 	str[size] = '\0';
 	return (str);
 }
