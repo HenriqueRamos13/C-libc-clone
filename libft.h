@@ -7,6 +7,11 @@
 # include <string.h>
 # include <fcntl.h>
 
+typedef	struct	s_list
+{
+	void	*content;
+	struct	s_list *next;
+}		t_list;
 void	*ft_memset(void *str, int c, size_t n);
 void	ft_bzero(void *s, size_t n);
 void	*ft_memccpy(void *str1, const void *str2, int c, size_t n);
@@ -38,5 +43,11 @@ char	*ft_strtrim(const char *s1, const char *set);
 char	*ft_my_trim(const char *s1, const char *set);
 char	**ft_split(const char *s, char c);
 char	**ft_split(const char *s, char c);
+char	*ft_itoa(int n);
+void	ft_putchar_fd(char c, int fd);
+char	*ft_strmapi(const char *s, char (*f)(unsigned int, char));
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putendl_fd(char *s, int fd);
+void	ft_putnbr_fd(int n, int fd);
 
 #endif
