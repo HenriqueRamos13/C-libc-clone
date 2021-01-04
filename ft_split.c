@@ -1,6 +1,6 @@
 #include "libft.h"
 
-static	void	*malloc_array(const char *s, char c)
+void	*malloc_array(const char *s, char c)
 {
 	char	**arr;
 	size_t	size;
@@ -26,7 +26,7 @@ static	void	*malloc_array(const char *s, char c)
 	return (arr);
 }
 
-static	void	*malloc_elements_array(char **arr, const char *s, char c)
+void	*malloc_elements_array(char **arr, const char *s, char c)
 {
 	size_t	count;
 	size_t	size;
@@ -52,7 +52,7 @@ static	void	*malloc_elements_array(char **arr, const char *s, char c)
 	return (arr);
 }
 
-static	void	fill_array(char **arr, const char *s, char c)
+void	fill_array(char **arr, const char *s, char c)
 {
 	size_t	index;
 	size_t	j;

@@ -1,6 +1,6 @@
 #include "libft.h"
 
-static	int	get_int_len(long n)
+int		get_int_len(long n)
 {
 	size_t	len;
 

@@ -1,6 +1,6 @@
 #include "libft.h"
 
-static	void	*malloc_and_fill(const char *s1, size_t start, size_t end)
+void	*malloc_and_fill(const char *s1, size_t start, size_t end)
 {
 	char	*str;
 	size_t	count;
@@ -24,7 +24,7 @@ static	void	*malloc_and_fill(const char *s1, size_t start, size_t end)
 	return (str);
 }
 
-static	int	is_in_set(char c, const char *set)
+int		is_in_set(char c, const char *set)
 {
 	size_t	count;
 

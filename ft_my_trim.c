@@ -1,6 +1,6 @@
 #include "libft.h"
 
-static	int	get_start(const char *s1, const char *set)
+int		get_start(const char *s1, const char *set)
 {
 	size_t	start;
 	size_t	pos_set;
@@ -23,7 +23,7 @@ static	int	get_start(const char *s1, const char *set)
 	return (start);
 }
 
-static	int	get_end(const char *s1, const char *set)
+int		get_end(const char *s1, const char *set)
 {
 	size_t	end;
 	size_t	pos_set;
@@ -46,7 +46,7 @@ static	int	get_end(const char *s1, const char *set)
 	return (end);
 }
 
-static	void	*malloc_and_fill(const char *s1, size_t start, size_t end)
+void	*malloc_and_fill(const char *s1, size_t start, size_t end)
 {
 	char	*str;
 	size_t	count;
