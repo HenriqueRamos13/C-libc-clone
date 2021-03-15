@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strrchr.c                                       :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hramos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 12:17:37 by hramos            #+#    #+#             */
-/*   Updated: 2021/02/12 12:17:38 by hramos           ###   ########.fr       */
+/*   Created: 2021/02/12 12:09:10 by hramos            #+#    #+#             */
+/*   Updated: 2021/02/12 12:09:11 by hramos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 char	*ft_strrchr(const char *s, int c)
 {
-	size_t	len;
-	char	*i_str;
+	int		i;
+	int		pos_c;
 
-	i_str = (char *)s;
-	len = ft_strlen(s);
-	while (*i_str != '\0')
-		i_str++;
-	while ((len + 1) != 0)
+	pos_c = -1;
+	i = 0;
+	while (s[i])
 	{
-		if (*i_str == c)
-			return (i_str);
-		i_str--;
-		len--;
+		if (s[i] == (unsigned char)c)
+			pos_c = i;
+		i++;
 	}
-	return (NULL);
+	if (c == '\0')
+		return ((char *)s + i);
+	if (pos_c == -1)
+		return (NULL);
+	return ((char *)s + pos_c);
 }

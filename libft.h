@@ -25,6 +25,7 @@ typedef	struct		s_list
 	struct s_list	*next;
 }					t_list;
 
+int				ft_toupper(int c);
 void				*ft_memset(void *str, int c, size_t n);
 void				ft_bzero(void *s, size_t n);
 void				*ft_memccpy(void *str1, const void *str2, int c, size_t n);
@@ -51,7 +52,7 @@ char				*ft_strnstr(const char *haystack, const char *needle,
 int					ft_atoi(const char *str);
 void				*ft_calloc(size_t count, size_t size);
 char				*ft_strdup(const char *s1);
-void				*ft_substr(const char *s, unsigned int start, size_t len);
+char				*ft_substr(const char *s, unsigned int start, size_t len);
 char				*ft_strjoin(const char *s1, const char *s2);
 char				*ft_strtrim(const char *s1, const char *set);
 char				*ft_my_trim(const char *s1, const char *set);
