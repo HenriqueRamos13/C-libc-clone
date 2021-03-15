@@ -23,7 +23,7 @@ all:		${NAME}
 bonus:		$(BONUS_OBJS)
 		ar rcs $(NAME) $(BONUS_OBJS)
 
-${NAME}:	${OBJ}
+$(NAME):	${OBJ}
 		${CC} ${CFLAGS} -c ${SRCS} -I ${INC}
 
 clean:		
