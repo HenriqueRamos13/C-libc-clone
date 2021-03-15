@@ -1,72 +1,71 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strtrim.c                                       :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hramos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 12:17:46 by hramos            #+#    #+#             */
-/*   Updated: 2021/02/12 12:17:47 by hramos           ###   ########.fr       */
+/*   Created: 2021/02/12 12:09:10 by hramos            #+#    #+#             */
+/*   Updated: 2021/02/12 12:09:11 by hramos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*malloc_and_fill(const char *s1, size_t start, size_t end)
+static int	isset(char c, char const *set)
 {
-	char	*str;
-	size_t	count;
+	int i;
 
-	if (ft_strlen(s1) == 0 || start >= ft_strlen(s1))
+	i = 0;
+	while (set[i])
 	{
-		if (!(str = malloc(sizeof(char) * 1)))
-			return (NULL);
-		str[0] = '\0';
-		return (str);
-	}
-	if (!(str = malloc(sizeof(char) * (end - start + 1))))
-		return (NULL);
-	count = 0;
-	while (count <= (end - start))
-	{
-		str[count] = s1[start + count];
-		count++;
-	}
-	str[count] = '\0';
-	return (str);
-}
-
-int		is_in_set(char c, const char *set)
-{
-	size_t	count;
-
-	count = 0;
-	while (set[count] != '\0')
-	{
-		if ((int)set[count] == (int)c)
+		if (set[i] == c)
 			return (1);
-		count++;
+		i++;
 	}
 	return (0);
 }
 
-char	*ft_strtrim(const char *s1, const char *set)
+static int	strlen_trim(char const *s1, char const *set)
 {
-	char	*str;
-	size_t	count;
-	size_t	start;
-	size_t	end;
+	int len;
+	int i1;
+	int i2;
 
-	if (s1 == NULL || set == NULL)
+	len = ft_strlen(s1);
+	i1 = 0;
+	i2 = len - 1;
+	while (i1 < len && isset(s1[i1], set))
+	{
+		i1++;
+		len--;
+	}
+	while (i2 >= 0 && isset(s1[i2], set))
+	{
+		i2--;
+		len--;
+	}
+	if (len < 0)
+		len = 0;
+	return (len);
+}
+
+char		*ft_strtrim(char const *s1, char const *set)
+{
+	char	*s_new;
+	int		len;
+	int		i;
+
+	i = 0;
+	if (!s1 || !set)
 		return (NULL);
-	count = 0;
-	while (is_in_set(s1[count], set))
-		count++;
-	start = count;
-	count = ft_strlen(s1) - 1;
-	while (is_in_set(s1[count], set))
-		count--;
-	end = count;
-	str = malloc_and_fill(s1, start, end);
-	return (str);
+	len = strlen_trim(s1, set);
+	if (!(s_new = malloc(sizeof(char) * (len + 1))))
+		return (NULL);
+	while (*s1 && isset(*s1, set))
+		s1++;
+	while (len--)
+		s_new[i++] = *s1++;
+	s_new[i] = '\0';
+	return (s_new);
 }

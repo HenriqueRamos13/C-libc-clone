@@ -1,47 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hramos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 12:07:31 by hramos            #+#    #+#             */
-/*   Updated: 2021/02/12 12:07:40 by hramos           ###   ########.fr       */
+/*   Created: 2021/02/12 12:09:10 by hramos            #+#    #+#             */
+/*   Updated: 2021/02/12 12:09:11 by hramos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	is_space(char c)
+static int	ft_isspac(char c)
 {
-	if (c == ' ' || c == '\n' || c == '\t' || c == '\v'
-		|| c == '\f' || c == '\r')
+	if (c >= 9 && c <= 13)
+		return (1);
+	else if (c == 32)
 		return (1);
 	else
 		return (0);
 }
 
-int	ft_atoi(const char *str)
+int			ft_atoi(const char *str)
 {
-	long	num;
-	int		aux;
+	int	res;
+	int	negative;
 
-	aux = 0;
-	num = 0;
-	while (is_space(*str) == 1)
+	negative = 1;
+	res = 0;
+	while (ft_isspac(*str))
 		str++;
-	while (*str != '\0')
+	if (*str == '-')
 	{
-		if ((*str == '-' || *str == '+') && aux == 0)
-			aux = *str == '-' ? aux - 1 : aux + 1;
-		else if (ft_isdigit(*str))
-		{
-			aux = aux == 0 ? 1 : aux;
-			num = (num * 10) + (*str - 48);
-		}
-		else
-			return ((int)(num * aux));
+		negative = -1;
 		str++;
 	}
-	return ((int)(num * aux));
+	else if (*str == '+')
+		str++;
+	while (*str >= '0' && *str <= '9')
+		res = (res * 10) + (*str++ - '0');
+	return (negative * res);
 }

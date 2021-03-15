@@ -3,105 +3,105 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hramos <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: vrubio <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 12:15:04 by hramos            #+#    #+#             */
-/*   Updated: 2021/02/12 12:15:05 by hramos           ###   ########.fr       */
+/*   Created: 2021/03/05 21:00:15 by vrubio            #+#    #+#             */
+/*   Updated: 2021/03/06 11:46:48 by vrubio           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*malloc_array(const char *s, char c)
+static int	free_all(char **split, int j)
 {
-	char	**arr;
-	size_t	size;
-	size_t	ct;
-	size_t	s_sz;
-
-	s_sz = 0;
-	ct = 0;
-	size = 0;
-	while (s[ct] != '\0')
+	while (j >= 0)
 	{
-		if (s[ct] != c && s_sz == 0)
-		{
-			size++;
-			s_sz++;
-		}
-		else if (s_sz > 0 && !(s[ct] != c))
-			s_sz = 0;
-		ct++;
+		free(split[j]);
+		j++;
 	}
-	if (!(arr = ft_calloc(size + 1, sizeof(char *))))
-		return (NULL);
-	return (arr);
+	free(split);
+	return (0);
 }
 
-void	*malloc_elements_array(char **arr, const char *s, char c)
+static int	get_len(char const *s, char c)
 {
-	size_t	count;
-	size_t	size;
-	size_t	index;
+	int	i;
+	int	word;
 
-	index = 0;
-	count = 0;
-	size = 0;
-	while (s[count] != '\0')
+	i = 0;
+	word = 0;
+	if (s[0] == '\0')
+		return (0);
+	while (s[0] == c && s[i + 1] == c && s[i] != '\0')
+		i++;
+	while (s[i] != '\0')
 	{
-		if (s[count] != c)
+		if (s[i] == c && s[i + 1] != c && s[i + 1] != '\0')
 		{
-			size = 0;
-			while (s[count++] != c)
-				size++;
-			arr[index] = ft_calloc(size + 1, sizeof(char));
-			index++;
+			word++;
 		}
-		else
-			count++;
+		i++;
 	}
-	arr[index] = 0;
-	return (arr);
+	if (s[0] != c)
+		word += 1;
+	return (word);
 }
 
-void	fill_array(char **arr, const char *s, char c)
+static char	*copy(char *split, const char *s, int i, int k)
 {
-	size_t	index;
-	size_t	j;
-	size_t	str_size;
+	int	car;
 
-	str_size = 0;
-	index = 0;
+	car = 0;
+	while (k < i)
+	{
+		split[car++] = s[k++];
+	}
+	split[car] = '\0';
+	return (split);
+}
+
+static int	alloc_and_copy(char **split, char const *s, char c, int i)
+{
+	int	j;
+	int	k;
+	int	car;
+
 	j = 0;
-	while (*s != '\0')
+	while (s[i] == c && s[i] != '\0')
+		i++;
+	if (s[i] == '\0')
+		return (1);
+	while (s[i] != '\0')
 	{
-		if ((int)*s == (int)c && str_size > 0)
-		{
-			arr[index++][j] = '\0';
-			str_size = 0;
-			j = 0;
-		}
-		else if (!(*s == c))
-		{
-			arr[index][j++] = *s;
-			if ((int)*(s + 1) == 0)
-				arr[index][j] = '\0';
-			str_size++;
-		}
-		s++;
+		car = 0;
+		while (s[i] != c && s[i] != '\0' && car++ <= i)
+			i++;
+		split[j] = malloc(sizeof(char) * (car + 1));
+		if (!split)
+			return (free_all(split, j));
+		k = i - car;
+		split[j] = copy(split[j], s, i, k);
+		while (s[i] == c && s[i] != '\0')
+			i++;
+		j++;
 	}
+	split[j] = NULL;
+	return (j);
 }
 
-char	**ft_split(const char *s, char c)
+char		**ft_split(char const *s, char c)
 {
-	char	**arr;
+	char	**split;
+	int		i;
 
-	if (s == NULL)
+	i = 0;
+	if (!s)
 		return (NULL);
-	if (!(arr = malloc_array(s, c)))
+	split = (char **)malloc(sizeof(char *) * (get_len(s, c) + 1));
+	if (!s || !split)
 		return (NULL);
-	if (!(arr = malloc_elements_array(arr, s, c)))
+	split[get_len(s, c)] = NULL;
+	if (alloc_and_copy(split, s, c, i) == 0)
 		return (NULL);
-	fill_array(arr, s, c);
-	return (arr);
+	return (split);
 }

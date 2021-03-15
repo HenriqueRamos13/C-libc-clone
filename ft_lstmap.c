@@ -1,38 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap.c                                        :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hramos <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/02/12 12:12:27 by hramos            #+#    #+#             */
-/*   Updated: 2021/02/12 12:12:29 by hramos           ###   ########.fr       */
+/*   Created: 2021/02/12 12:09:10 by hramos            #+#    #+#             */
+/*   Updated: 2021/02/12 12:09:11 by hramos           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void*), void (*del)(void *))
 {
-	t_list	*new;
-	t_list	*temp;
+	t_list *first;
+	t_list *new;
 
-	if (lst == NULL || f == NULL)
+	if (!f || !del)
 		return (NULL);
-	new = NULL;
+	first = NULL;
 	while (lst)
 	{
-		if (del)
+		if (!(new = ft_lstnew((*f)(lst->content))))
 		{
-			ft_lstclear(&lst, del);
+			while (first)
+			{
+				new = first->next;
+				(*del)(first->content);
+				free(first);
+				first = new;
+			}
+			lst = NULL;
 			return (NULL);
 		}
-		else
-		{
-			temp = ft_lstnew(f(lst->content));
-			ft_lstadd_back(&new, temp);
-		}
+		ft_lstadd_back(&first, new);
 		lst = lst->next;
 	}
-	return (new);
+	return (first);
 }
